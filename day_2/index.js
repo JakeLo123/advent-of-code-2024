@@ -14,7 +14,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
   - Any two adjacent levels differ by at least one and at most three.
  */
 
-(async function main() {
+(function main() {
   try {
     const lineReader = readline.createInterface({
       input: fs.createReadStream(join(__dirname, "input.txt"), "utf8"),

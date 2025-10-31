@@ -1,0 +1,14 @@
+{
+  "name": "advent-of-code-2024",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JakeLo123/advent-of-code-2024.git"
+  },
+  "author": "Jake Loew",
+  "license": "ISC",
+  "homepage": "https://github.com/JakeLo123/advent-of-code-2024#readme",
+  "description": "Advent of Code 2024... in 2025"
+}

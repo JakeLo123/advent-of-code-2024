@@ -9,7 +9,7 @@ import readline from "node:readline";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-(async function main() {
+(function main() {
   try {
     const lineReader = readline.createInterface({
       input: fs.createReadStream(join(__dirname, "input.txt"), "utf8"),
