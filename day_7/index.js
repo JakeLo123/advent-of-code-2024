@@ -8,10 +8,10 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const OPERATORS = ["+", "*"];
+const OPERATORS = ["+", "*", "|"];
 
 (async function main() {
-  const data = await fs.readFile(join(__dirname, "input.txt"), "utf8");
+  const data = await fs.readFile(join(__dirname, "example.txt"), "utf8");
   let totalCalibrationResult = 0;
 
   for (const line of data.split("\n")) {
@@ -25,7 +25,7 @@ const OPERATORS = ["+", "*"];
 
     let operationChains = [];
 
-    (function generateOperations(cur) {
+    (function generateOperationChains(cur) {
       if (cur.length === values.length - 1) {
         operationChains.push(cur);
         return;
@@ -33,28 +33,46 @@ const OPERATORS = ["+", "*"];
 
       for (let operator of OPERATORS) {
         cur += operator;
-        generateOperations(cur);
+        generateOperationChains(cur);
         cur = cur.slice(0, -1);
       }
     })("");
 
     for (let operationChain of operationChains) {
-      let operationResult = 0;
+      let valuesWithConcatenation = [];
 
-      for (let i in values) {
-        i = Number(i);
-        if (i === 0) {
-          operationResult = values[i];
-          continue;
-        }
+      for (let i = 1; i < values.length; i++) {
+        let operation = operationChain[i - 1];
+        let a = values[i - 1],
+          b = values[i];
 
-        let value = values[i],
-          operator = operationChain[i - 1];
-
-        if (operator === "+") {
-          operationResult += value;
+        if (operation === "|") {
+          valuesWithConcatenation.push(Number(`${a}${b}`));
         } else {
-          operationResult *= value;
+          valuesWithConcatenation.push(a);
+          if (i === values.length - 1) {
+            valuesWithConcatenation.push(b);
+          }
+        }
+      }
+
+      let operationResult = valuesWithConcatenation[0];
+      operationChain = operationChain
+        .split("")
+        .filter((o) => o !== "|")
+        .join("");
+
+      console.log(valuesWithConcatenation);
+
+      if (!operationChain || values.length < 2) continue;
+
+      for (let i = 1; i < valuesWithConcatenation.length; i++) {
+        let operation = operationChain[i - 1];
+
+        if (operation === "+") {
+          operationResult += valuesWithConcatenation[i];
+        } else {
+          operationResult *= valuesWithConcatenation[i];
         }
       }
 
